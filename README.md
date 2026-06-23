@@ -1,7 +1,7 @@
 <div align="center">
   <h1>✨ Write-Together - Collaborative Document Editor</h1>
   <p><strong>Write-Together is a full-stack, real-time collaborative document editor built on the MERN stack and Socket.io. </strong></p>
-  <p><strong><a href="https://link-ink-buy0.onrender.com" target="_blank">🟢 Live Demo: link-ink-buy0.onrender.com</a></strong></p>
+  <p><strong><a href="https://write-together-eta.vercel.app/" target="_blank">🟢 Live Demo: https://write-together-eta.vercel.app/</a></strong></p>
 
   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
   ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
