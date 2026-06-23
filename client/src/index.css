@@ -1,0 +1,594 @@
+/* ============================================
+   Design tokens — Write-Together
+   Palette: cool light blues, soft whites, and
+   slate accents. Clean, airy, collaborative.
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;600&display=swap');
+
+:root {
+  --paper: #f0f4f8;
+  --paper-shadow: #d1dce8;
+  --surface: #ffffff;
+  --ink: #1a2333;
+  --ink-soft: #5a6a7e;
+
+  --accent: #2563eb;
+  --accent-mid: #3b82f6;
+  --accent-soft: rgba(37, 99, 235, 0.08);
+  --accent-glow: rgba(59, 130, 246, 0.25);
+
+  --teal: #0ea5e9;
+  --teal-soft: rgba(14, 165, 233, 0.1);
+
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+
+  --success: #16a34a;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+  --shadow-sm: 0 1px 3px rgba(26,35,51,0.08), 0 1px 2px rgba(26,35,51,0.04);
+  --shadow-md: 0 4px 12px rgba(26,35,51,0.10), 0 2px 4px rgba(26,35,51,0.06);
+  --shadow-lg: 0 12px 32px rgba(26,35,51,0.12), 0 4px 8px rgba(26,35,51,0.06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+button { font-family: var(--font-body); cursor: pointer; }
+input, textarea { font-family: var(--font-body); }
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── Quill overrides ── */
+.read-only-editor .ql-toolbar { display: none !important; }
+.read-only-editor .ql-container {
+  border-top: 1px solid #ccc !important;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.quill .ql-container { flex: 1; display: flex; flex-direction: column; }
+.quill .ql-editor { flex: 1; }
+
+/* ── Interactive button micro-animation ── */
+.interactive-btn { transition: all 0.15s ease-out; }
+.interactive-btn:active { transform: scale(0.97); }
+
+/* ══════════════════════════════════════════
+   LANDING PAGE — animated mesh background
+   ══════════════════════════════════════════ */
+.landing-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(14,165,233,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 60% 30%, rgba(99,102,241,0.07) 0%, transparent 50%),
+    linear-gradient(160deg, #e8f0fe 0%, #f0f7ff 40%, #e0f2fe 100%);
+  overflow: hidden;
+}
+
+/* Floating blobs */
+.landing-bg::before,
+.landing-bg::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  animation: blob-drift 18s ease-in-out infinite alternate;
+}
+.landing-bg::before {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(59,130,246,0.2), transparent 70%);
+  top: -100px; left: -100px;
+}
+.landing-bg::after {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(14,165,233,0.18), transparent 70%);
+  bottom: -80px; right: -60px;
+  animation-delay: -9s;
+}
+
+@keyframes blob-drift {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(40px, 30px) scale(1.1); }
+  100% { transform: translate(-20px, 50px) scale(0.95); }
+}
+
+/* Floating particles on landing */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float linear infinite;
+  opacity: 0;
+}
+@keyframes particle-float {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+
+/* Cursor blink for typewriter */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.typewriter-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.1em;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  border-radius: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+/* Feature cards hover lift */
+.feature-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(37,99,235,0.12), 0 4px 8px rgba(37,99,235,0.08) !important;
+}
+
+/* ══════════════════════════════════════════
+   AUTH PAGE — glassmorphism card
+   ══════════════════════════════════════════ */
+.auth-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 20%, rgba(59,130,246,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 70% 75%, rgba(14,165,233,0.12) 0%, transparent 55%),
+    linear-gradient(150deg, #dbeafe 0%, #f0f9ff 50%, #e0f2fe 100%);
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD
+   ══════════════════════════════════════════ */
+.dashboard-header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--paper-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* ── Dashboard card rename affordance ── */
+.doc-rename-btn {
+  opacity: 0.35;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.doc-card-wrap:hover .doc-rename-btn {
+  opacity: 0.8;
+}
+.doc-rename-btn:hover {
+  opacity: 1 !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+}
+/* Card hover lift */
+.doc-card-wrap {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.doc-card-wrap:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(37,99,235,0.11), 0 2px 6px rgba(37,99,235,0.06);
+  border-color: rgba(37,99,235,0.22);
+}
+
+/* ═══════════════════════════════════════════════════
+   QUILL EDITOR — fonts, toolbar alignment, theming
+   ═══════════════════════════════════════════════════ */
+
+/* ── 1. Apply fonts inside editor content ── */
+.ql-font-inter        { font-family: "Inter", sans-serif; }
+.ql-font-lora         { font-family: "Lora", Georgia, serif; }
+.ql-font-merriweather { font-family: "Merriweather", Georgia, serif; }
+.ql-font-playfair     { font-family: "Playfair Display", Georgia, serif; }
+.ql-font-roboto-slab  { font-family: "Roboto Slab", Georgia, serif; }
+.ql-font-source-serif { font-family: "Source Serif 4", Georgia, serif; }
+.ql-font-mono         { font-family: "JetBrains Mono", monospace; }
+
+/* ── 2. Font picker button + dropdown item labels ──
+        Quill sets the displayed text via ::before on [data-value].
+        Without these, it falls back to "Sans Serif". ── */
+.ql-font .ql-picker-label::before,
+.ql-font .ql-picker-item::before { content: "Default"; }
+
+.ql-font .ql-picker-label[data-value="inter"]::before,
+.ql-font .ql-picker-item[data-value="inter"]::before {
+  content: "Inter";
+  font-family: "Inter", sans-serif;
+}
+.ql-font .ql-picker-label[data-value="lora"]::before,
+.ql-font .ql-picker-item[data-value="lora"]::before {
+  content: "Lora";
+  font-family: "Lora", serif;
+}
+.ql-font .ql-picker-label[data-value="merriweather"]::before,
+.ql-font .ql-picker-item[data-value="merriweather"]::before {
+  content: "Merriweather";
+  font-family: "Merriweather", serif;
+}
+.ql-font .ql-picker-label[data-value="playfair"]::before,
+.ql-font .ql-picker-item[data-value="playfair"]::before {
+  content: "Playfair Display";
+  font-family: "Playfair Display", serif;
+}
+.ql-font .ql-picker-label[data-value="roboto-slab"]::before,
+.ql-font .ql-picker-item[data-value="roboto-slab"]::before {
+  content: "Roboto Slab";
+  font-family: "Roboto Slab", serif;
+}
+.ql-font .ql-picker-label[data-value="source-serif"]::before,
+.ql-font .ql-picker-item[data-value="source-serif"]::before {
+  content: "Source Serif";
+  font-family: "Source Serif 4", serif;
+}
+.ql-font .ql-picker-label[data-value="mono"]::before,
+.ql-font .ql-picker-item[data-value="mono"]::before {
+  content: "Mono";
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ── 3. Size picker labels ── */
+.ql-size .ql-picker-label::before,
+.ql-size .ql-picker-item::before { content: attr(data-value) !important; }
+.ql-size .ql-picker-label:not([data-value])::before,
+.ql-size .ql-picker-item:not([data-value])::before { content: "16px" !important; }
+
+/* ── 4. Toolbar overall layout ── */
+.wt-editor .ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid var(--paper-shadow);
+  background: #f5f8ff;
+  padding: 6px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+}
+
+/* Each format group gets a right margin and a vertical divider after it */
+.wt-editor .ql-toolbar .ql-formats {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  padding-right: 4px;
+  border-right: 1px solid var(--paper-shadow);
+}
+.wt-editor .ql-toolbar .ql-formats:last-child {
+  border-right: none;
+}
+
+/* ── 5. Toolbar buttons — fixed size + vertical center ── */
+.wt-editor .ql-toolbar.ql-snow button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
+}
+.wt-editor .ql-toolbar.ql-snow button svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.wt-editor .ql-toolbar.ql-snow button:hover,
+.wt-editor .ql-toolbar.ql-snow button.ql-active {
+  background: var(--accent-soft);
+}
+
+/* ── 6. SVG strokes / fills (icon color) ── */
+.wt-editor .ql-toolbar .ql-stroke {
+  stroke: var(--ink-soft);
+  stroke-width: 1.8;
+}
+.wt-editor .ql-toolbar button:hover .ql-stroke,
+.wt-editor .ql-toolbar button.ql-active .ql-stroke { stroke: var(--accent); }
+.wt-editor .ql-toolbar .ql-fill { fill: var(--ink-soft); }
+.wt-editor .ql-toolbar button:hover .ql-fill,
+.wt-editor .ql-toolbar button.ql-active .ql-fill { fill: var(--accent); }
+
+/* ── 7. Picker (font + size + align + color) shared styles ── */
+.wt-editor .ql-toolbar .ql-picker {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  vertical-align: middle;
+  font-size: 12px;
+  color: var(--ink-soft);
+  position: relative;
+}
+.wt-editor .ql-font.ql-picker  { min-width: 116px; }
+.wt-editor .ql-size.ql-picker  { min-width: 62px; }
+.wt-editor .ql-align.ql-picker { min-width: 28px; }
+
+.wt-editor .ql-toolbar .ql-picker-label {
+  position: relative;          /* arrow SVG is absolute inside this */
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: 26px;
+  padding: 0 20px 0 8px;       /* right pad = room for arrow */
+  border: 1px solid var(--paper-shadow);
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+/* Arrow SVG — pinned to the right edge of the label */
+.wt-editor .ql-toolbar .ql-picker-label svg {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+/* Stroke on the arrow chevron */
+.wt-editor .ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: var(--ink-soft);
+}
+.wt-editor .ql-toolbar .ql-picker-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  border: 1px solid var(--paper-shadow);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(37,99,235,0.10);
+  padding: 4px;
+  background: #fff;
+  min-width: 140px;
+  z-index: 200;
+}
+.wt-editor .ql-toolbar .ql-picker-item {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: block;
+}
+.wt-editor .ql-toolbar .ql-picker-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Color/background pickers — icon-only, no border */
+.wt-editor .ql-toolbar .ql-color-picker.ql-picker,
+.wt-editor .ql-toolbar .ql-background.ql-picker {
+  min-width: 28px;
+  width: 28px;
+}
+.wt-editor .ql-toolbar .ql-color-picker .ql-picker-label,
+.wt-editor .ql-toolbar .ql-background .ql-picker-label {
+  width: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* ── 8. Container + editor area ── */
+.wt-editor .ql-container.ql-snow {
+  border: none;
+}
+.wt-editor .ql-editor {
+  padding: 2rem 2.5rem;
+  min-height: 480px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.wt-editor .ql-editor.ql-blank::before {
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 0.5;
+  left: 2.5rem;
+}
+
+/* ── 9. Read-only mode ── */
+.wt-editor.read-only-editor .ql-toolbar { display: none !important; }
+.wt-editor.read-only-editor .ql-container {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+/* ══════════════════════════════════════════
+   EDITOR — light frosted glass header
+   ══════════════════════════════════════════ */
+.editor-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 0%, rgba(59,130,246,0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(14,165,233,0.06) 0%, transparent 50%),
+    linear-gradient(170deg, #f8faff 0%, #f0f4f8 100%);
+}
+
+/* ── slideUp animation for modals ── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ══════════════════════════════════════════
+   Responsive — tablet & mobile
+   ══════════════════════════════════════════ */
+
+/* ── Tablet (≤900px): shrink landing preview, tighten editor ── */
+@media (max-width: 900px) {
+  .landing-preview  { display: none !important; }
+  .landing-features { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── Mobile (≤768px): full layout changes ── */
+@media (max-width: 768px) {
+
+  /* Generic helpers */
+  .resp-padding      { padding: 1rem !important; }
+  .resp-font-display { font-size: 1.9rem !important; }
+  .resp-card         { width: 100% !important; max-width: 100% !important; padding: 1.1rem !important; box-sizing: border-box !important; }
+  .resp-stack        { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+  .resp-grid         { grid-template-columns: 1fr !important; }
+  .resp-full-width   { width: 100% !important; }
+  .resp-dropdown     { right: auto !important; left: 0 !important; }
+
+  /* ── Landing page ── */
+  .landing-headline  { font-size: 2.2rem !important; min-height: auto !important; }
+  .landing-features  { grid-template-columns: 1fr !important; gap: 1rem !important; }
+
+  /* ── Auth page ── */
+  .auth-bg { padding: 1rem !important; align-items: flex-start !important; padding-top: 2rem !important; }
+
+  /* ── Dashboard header ── */
+  .dashboard-header-wrap {
+    padding: 0 1rem !important;
+  }
+
+  /* ── Dashboard layout: sidebar becomes top bar ── */
+  .dash-layout {
+    flex-direction: column !important;
+  }
+  .dash-sidebar {
+    width: 100% !important;
+    height: auto !important;
+    position: static !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--paper-shadow) !important;
+    flex-direction: column !important;
+    padding: 0.75rem 1rem !important;
+    gap: 8px !important;
+    overflow-y: visible !important;
+  }
+  .dash-sidebar-nav {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    flex: unset !important;
+  }
+  .dash-sidebar-nav > button {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+    min-width: 100px !important;
+  }
+  .dash-sidebar-user { display: none !important; }
+  .dash-new-doc-btn  { width: 100% !important; }
+  .dash-main         { padding: 1rem !important; overflow-y: auto !important; }
+  .dash-grid         { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+  /* join form full width */
+  .dash-sidebar .dash-join-input { width: 100% !important; box-sizing: border-box !important; }
+
+  /* ── Editor header: collapses into rows ── */
+  .editor-header {
+    height: auto !important;
+    min-height: 56px !important;
+    padding: 0.6rem 1rem !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    row-gap: 6px !important;
+  }
+  .editor-header-center {
+    order: -1 !important;           /* title first */
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .editor-header-center input {
+    font-size: 15px !important;
+  }
+  .editor-header-right {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
+  }
+
+  /* ── Editor toolbar: smaller, wraps ── */
+  .wt-editor .ql-toolbar.ql-snow {
+    padding: 5px 8px !important;
+  }
+  .wt-editor .ql-font.ql-picker { min-width: 86px !important; }
+  .wt-editor .ql-size.ql-picker { min-width: 52px !important; }
+  .wt-editor .ql-editor {
+    padding: 1rem 1.1rem !important;
+    min-height: 280px !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+  }
+  .wt-editor .ql-editor.ql-blank::before { left: 1.1rem !important; }
+
+  /* ── Editor main container ── */
+  .editor-main { padding: 0.75rem !important; }
+
+  /* ── Modals full screen on mobile ── */
+  .wt-modal, .dash-modal {
+    max-width: 100% !important;
+    max-height: 90vh !important;
+    border-radius: var(--radius-lg) !important;
+    padding: 1.25rem !important;
+    margin: 0 0.5rem !important;
+  }
+  .wt-overlay, .dash-overlay {
+    padding: 0.5rem !important;
+    align-items: flex-end !important;
+  }
+}
